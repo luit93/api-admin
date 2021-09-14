@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon servver.js",
@@ -18,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/luit93/api-admin/issues"
   },
-  "homepage": "https://github.com/luit93/api-admin#readme"
+  "homepage": "https://github.com/luit93/api-admin#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "mongoose": "^6.0.5",
+    "morgan": "^1.10.0"
+  }
 }
