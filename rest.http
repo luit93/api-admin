@@ -7,7 +7,7 @@ Content-Type: application/json
 {
     "fname":"Luit2n",
     "lname": "Saikia",
-    "email":"a2@aa.com",
+    "email":"bon4g@aa.com",
     "password":"3hhss3",
     "phone":"222222",
     "dob": "1993-04-23",
@@ -17,6 +17,20 @@ Content-Type: application/json
 
 
 }
+
+###  email verification
+POST http://localhost:8000/api/v1/user/email-verification
+Content-Type: application/json
+
+{
+    
+    "email":"bon4g@aa.com",
+    "otp": "23343"
+    
+}
+
+
+
 
 ###  get
 GET http://localhost:8000/api/v1/user
