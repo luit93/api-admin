@@ -6,12 +6,12 @@ export const newUserFormValidation = (req, res, next) => {
   const schema = Joi.object({
     fname: Joi.string().max(30).required().alphanum(),
     lname: Joi.string().max(30).required().alphanum(),
-    dob: Joi.date().required(),
+    dob: Joi.date().allow('').allow(null),
     email,
     password: Joi.string().min(6).max(50).required().alphanum(),
-    phone: Joi.string().max(50),
-    gender: Joi.string().max(6).required(),
-    address: Joi.string().max(100).required(),
+    phone: Joi.string().max(50).allow(''),
+    gender: Joi.string().max(6).allow(''),
+    address: Joi.string().max(100).allow(''),
   })
 
   const result = schema.validate(req.body) //{value: {}, error: "msg"}
