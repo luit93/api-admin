@@ -1,11 +1,24 @@
 import express from 'express'
+import {
+  createUniqueResetPin,
+  findUniqueReset,
+  deleteUniqueReset,
+} from '../models/reset-pin/ResetPin.model.js'
+import { getRandomOTP } from '../helpers/otp.helper.js'
+import {
+  emailProcessor,
+  emailVerifivationWelcome,
+} from '../helpers/mail.helper.js'
 const Router = express.Router()
 
-import { createUser } from '../models/users/User.model.js'
-import { newUserFormValidation } from '../middlewares/validation.middleware.js'
+import { createUser, activeUser } from '../models/users/User.model.js'
+import {
+  newUserFormValidation,
+  emailVerificationValidation,
+} from '../middlewares/validation.middleware.js'
 import { hashPassword } from '../helpers/bcrypt.helper.js'
 
-Router.all('/', (req, res, next) => {
+Router.all('/', async (req, res, next) => {
   console.log('hit it')
   next()
 })
@@ -20,6 +33,17 @@ Router.post('/', newUserFormValidation, async (req, res) => {
     const result = await createUser(req.body)
     if (result?._id) {
       //create unique code
+      const optLength = 8
+      const otp = getRandomOTP(optLength)
+      const uniqueCombo = {
+        otp,
+        email: result.email,
+      }
+      const uniquePinData = await createUniqueResetPin(uniqueCombo)
+      console.log(uniquePinData)
+      if (uniquePinData?._id) {
+        emailProcessor(uniqueCombo)
+      }
       //send email to client with verif link
       return res.json({
         status: 'success',
@@ -45,6 +69,39 @@ Router.post('/', newUserFormValidation, async (req, res) => {
     })
   }
 })
+
+Router.post(
+  '/email-verification',
+  emailVerificationValidation,
+  async (req, res) => {
+    try {
+      console.log(req.body)
+      // check if
+      const result = await findUniqueReset(req.body)
+      if (result?._id) {
+        //if yes, then update the user status to active
+        const isUserActive = await activeUser(req.body.email)
+        if (isUserActive?._id) {
+          //then send welcome email to user
+          emailVerifivationWelcome(req.body.email)
+          deleteUniqueReset(req.body)
+          //
+          return res.json({
+            status: 'success',
+            message: 'Your email has been verified, sign in now',
+          })
+        }
+      }
+      res.json({ status: 'error', message: 'invalid or expired link' })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        status: 'error',
+        message: 'Error,unable to process your request',
+      })
+    }
+  }
+)
 // Router.get('/', (req, res) => {
 //   res.json({
 //     status: 'ok',

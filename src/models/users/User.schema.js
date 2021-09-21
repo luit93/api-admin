@@ -22,7 +22,6 @@ const UserSchema = mongoose.Schema(
 
     dob: {
       type: Date,
-      required: true,
       default: null,
     },
     email: {
@@ -46,13 +45,11 @@ const UserSchema = mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
       default: '',
       maxLength: 100,
     },
     gender: {
       type: String,
-      required: true,
       default: '',
     },
     isEmailConfirmed: {
