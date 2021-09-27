@@ -22,3 +22,12 @@ All user API will follow the following endpoint `${rootUrl}/api/v1`
 |1|`/` |POST|Expects the user info object and creates user inDB and returns stat message|
 |2|`/email-verification` |POST|Expects the user info object and checks if the link is valid|
 |---|---- |--------|------------|
+
+### Category API
+
+All user API will follow the following endpoint `${rootUrl}/api/v1/category`
+|# | API | METHOD | DESCRIPTION|
+|---|---- |--------|------------|
+|1|`/category` |POST|Expects the category info object and creates category in DB and returns stat message|
+|2|`/{_id}` |POST|Expects the object id and deletes if the id is valid|
+|---|---- |--------|------------|

@@ -36,3 +36,18 @@ Content-Type: application/json
 GET http://localhost:8000/api/v1/user
 Content-Type: application/json
 
+########### USER APIS
+
+### create category
+POST http://localhost:8000/api/v1/category
+Content-Type: application/json
+
+{
+"name": "kitchen ware",
+"parentCat": ""
+}
+
+
+### fetch category
+GET http://localhost:8000/api/v1/category
+Content-Type: application/json

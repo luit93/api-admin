@@ -1,6 +1,7 @@
 import Joi from 'joi'
 const shortStr = Joi.string().max(30).required().alphanum()
 const email = Joi.string().email({ minDomainSegments: 2 }).max(30).required()
+const str = Joi.string().max(30)
 export const newUserFormValidation = (req, res, next) => {
   console.log(req.body)
   const schema = Joi.object({
@@ -29,6 +30,22 @@ export const emailVerificationValidation = (req, res, next) => {
   const schema = Joi.object({
     otp: shortStr,
     email,
+  })
+
+  const result = schema.validate(req.body)
+  console.log(result)
+  if (result.error) {
+    return res.json({
+      status: 'error',
+      message: result.error.message,
+    })
+  }
+  next()
+}
+export const newCategoryValidation = (req, res, next) => {
+  const schema = Joi.object({
+    name: str.required(),
+    parentCat: str.allow('').allow(null),
   })
 
   const result = schema.validate(req.body)

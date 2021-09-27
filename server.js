@@ -19,9 +19,12 @@ import mongoClient from './src/config/db.js'
 mongoClient()
 //load routers
 import userRouter from './src/routers/userRouter.js'
+import categoryRouter from './src/routers/categoryRouter.js'
 //user routers
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/category', categoryRouter)
 
+//category router
 app.use('/', (req, res) => {
   res.send('You have reached the end of the router list')
 })
