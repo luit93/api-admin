@@ -19,7 +19,7 @@ Router.post('/', newCategoryValidation, async (req, res) => {
     const { name, parentCat } = req.body
     //slugify
     const slug = slugify(name, { lower: true })
-    const newCat = { name, slug, parentCat }
+    const newCat = { name, slug, parentCat: parentCat ? parentCat : null }
     const result = await createCategory(newCat)
     console.log(result)
     if (result?._id) {
