@@ -3,6 +3,7 @@ import slugify from 'slugify'
 import {
   createCategory,
   deleteCategory,
+  getCategory,
 } from '../models/category/Category.model.js'
 import { newCategoryValidation } from '../middlewares/validation.middleware.js'
 const Router = express.Router()
@@ -40,6 +41,25 @@ Router.post('/', newCategoryValidation, async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: msg,
+    })
+  }
+})
+//fetch category
+Router.get('/', async (req, res) => {
+  try {
+    const categories = await getCategory()
+
+    res.json({
+      status: 'success',
+      message: 'request success',
+      categories,
+    })
+  } catch (error) {
+    console.log(error.message)
+
+    res.status(500).json({
+      status: 'error',
+      message: 'error, unable to process your request, try again',
     })
   }
 })
