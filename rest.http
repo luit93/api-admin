@@ -53,7 +53,7 @@ Content-Type: application/json
 {
     "_id":"615284ef9d9bdd387d1e9e3f",
 "name": "Poultry",
-"parentCat": null
+"parentCat": "61524a398dfe26ef39a8b028"
 }
 
 
