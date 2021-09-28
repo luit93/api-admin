@@ -4,8 +4,12 @@ import {
   createCategory,
   deleteCategory,
   getCategory,
+  updateCategory,
 } from '../models/category/Category.model.js'
-import { newCategoryValidation } from '../middlewares/validation.middleware.js'
+import {
+  newCategoryValidation,
+  updateCategoryValidation,
+} from '../middlewares/validation.middleware.js'
 const Router = express.Router()
 Router.all('/', (req, res, next) => {
   console.log('from category router')
@@ -82,6 +86,36 @@ Router.delete('/:_id', async (req, res) => {
     res.json({
       status: 'error',
       message: 'Unable to delete the category,pleasy try again',
+    })
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({
+      status: 'error',
+      message: msg,
+    })
+  }
+})
+//update category
+Router.patch('/', updateCategoryValidation, async (req, res) => {
+  try {
+    // console.log(req.body)
+    const { parentCat } = req.body
+    req.body.parentCat = parentCat ? parentCat : null
+
+    const result = await updateCategory(req.body)
+
+    if (result?._id) {
+      console.log(result)
+      if (result?._id) {
+        return res.json({
+          status: 'success',
+          message: 'The category ahs been updated',
+        })
+      }
+    }
+    res.json({
+      status: 'error',
+      message: 'Unable to update the category,pleasy try again',
     })
   } catch (error) {
     console.log(error.message)

@@ -46,6 +46,15 @@ Content-Type: application/json
 "name": "garden-ware",
 "parentCat": null
 }
+### update category
+PATCH http://localhost:8000/api/v1/category
+Content-Type: application/json
+
+{
+    "_id":"615284ef9d9bdd387d1e9e3f",
+"name": "Poultry",
+"parentCat": null
+}
 
 
 ### fetch category
