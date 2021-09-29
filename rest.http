@@ -36,7 +36,23 @@ Content-Type: application/json
 GET http://localhost:8000/api/v1/user
 Content-Type: application/json
 
-########### USER APIS
+
+###### Login Api
+
+### admin Login
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+    
+    "email":"bon4g@aa.com",
+    "password": "233433"
+    
+}
+
+
+
+########### Category APIS
 
 ### create category
 POST http://localhost:8000/api/v1/category

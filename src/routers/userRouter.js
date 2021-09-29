@@ -11,12 +11,17 @@ import {
 } from '../helpers/mail.helper.js'
 const Router = express.Router()
 
-import { createUser, activeUser } from '../models/users/User.model.js'
+import {
+  createUser,
+  activeUser,
+  getUserByEmail,
+} from '../models/users/User.model.js'
 import {
   newUserFormValidation,
   emailVerificationValidation,
+  adminLoginValidation,
 } from '../middlewares/validation.middleware.js'
-import { hashPassword } from '../helpers/bcrypt.helper.js'
+import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
 
 Router.all('/', async (req, res, next) => {
   console.log('hit it')
@@ -102,6 +107,37 @@ Router.post(
     }
   }
 )
+
+//log in
+Router.post('/login', adminLoginValidation, async (req, res) => {
+  try {
+    console.log(req.body)
+    const { email, password } = req.body
+    //1 find user by email
+    const user = await getUserByEmail(email)
+    if (user?._id) {
+      //bcrypt and verify password
+      const isPassMatched = verifyPassword(password, user.password)
+      if (isPassMatched) {
+        return res.json({
+          status: 'success',
+          message: 'Login successful',
+          user,
+        })
+      }
+    }
+    res.json({
+      status: 'error',
+      message: 'invalid login details',
+    })
+  } catch (error) {
+    console.log(error)
+    res.json({
+      status: 'error',
+      message: 'Error,unable to log you in',
+    })
+  }
+})
 // Router.get('/', (req, res) => {
 //   res.json({
 //     status: 'ok',
