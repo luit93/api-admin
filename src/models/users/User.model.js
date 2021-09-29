@@ -15,3 +15,7 @@ export const activeUser = (email) => {
 export const getUserByEmail = (email) => {
   return UserSchema.findOne({ email })
 }
+export const setRefreshJWT = (_id, refreshJWT) => {
+  return UserSchema.findByIdAndUpdate(_id, { refreshJWT })
+  // return UserSchema.findByIdAndUpdate(_id,{refreshJWT:refreshJWT})
+}

@@ -9,7 +9,6 @@ import {
   emailProcessor,
   emailVerifivationWelcome,
 } from '../helpers/mail.helper.js'
-const Router = express.Router()
 
 import {
   createUser,
@@ -22,7 +21,9 @@ import {
   adminLoginValidation,
 } from '../middlewares/validation.middleware.js'
 import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
+import { getJWTs } from '../helpers/jwt.helper.js'
 
+const Router = express.Router()
 Router.all('/', async (req, res, next) => {
   console.log('hit it')
   next()
@@ -119,10 +120,13 @@ Router.post('/login', adminLoginValidation, async (req, res) => {
       //bcrypt and verify password
       const isPassMatched = verifyPassword(password, user.password)
       if (isPassMatched) {
+        user.password = undefined
+        const tokens = await getJWTs({ _id: user._id, email })
         return res.json({
           status: 'success',
           message: 'Login successful',
           user,
+          tokens,
         })
       }
     }
