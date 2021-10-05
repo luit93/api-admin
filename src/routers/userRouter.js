@@ -110,7 +110,7 @@ Router.post(
 )
 
 //log in
-Router.post('/login', isAdminAuth, adminLoginValidation, async (req, res) => {
+Router.post('/login', adminLoginValidation, async (req, res) => {
   try {
     console.log(req.body)
     const { email, password } = req.body
