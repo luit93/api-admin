@@ -22,7 +22,7 @@ import {
 } from '../middlewares/validation.middleware.js'
 import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
 import { getJWTs } from '../helpers/jwt.helper.js'
-
+import { isAdminAuth } from '../middlewares/auth.middleware.js'
 const Router = express.Router()
 Router.all('/', async (req, res, next) => {
   console.log('hit it')
@@ -110,7 +110,7 @@ Router.post(
 )
 
 //log in
-Router.post('/login', adminLoginValidation, async (req, res) => {
+Router.post('/login', isAdminAuth, adminLoginValidation, async (req, res) => {
   try {
     console.log(req.body)
     const { email, password } = req.body

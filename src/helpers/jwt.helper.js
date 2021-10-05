@@ -3,7 +3,7 @@ import { createAccessSession } from '../models/session/Session.model.js'
 import { setRefreshJWT } from '../models/users/User.model.js'
 
 export const createAccessJWT = async ({ _id, email }) => {
-  const token = jwt.sign({ email }, process.env.JWT_ACCESS_JWT, {
+  const token = jwt.sign({ email }, process.env.SECRET_ACCESS_JWT, {
     expiresIn: '15m',
   })
   //store in db
@@ -19,7 +19,7 @@ export const createAccessJWT = async ({ _id, email }) => {
   return false
 }
 const createRefreshJWT = async ({ _id, email }) => {
-  const token = jwt.sign({ email }, process.env.JWT_REFRESH_JWT, {
+  const token = jwt.sign({ email }, process.env.SECRET_REFRESH_JWT, {
     expiresIn: '30d',
   })
   const result = await setRefreshJWT(_id, token)
@@ -31,7 +31,14 @@ const createRefreshJWT = async ({ _id, email }) => {
 
 export const verifyRefreshJWT = (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_REFRESH_JWT)
+    return jwt.verify(token, process.env.SECRET_REFRESH_JWT)
+  } catch (error) {
+    return false
+  }
+}
+export const verifyAccessJWT = (token) => {
+  try {
+    return jwt.verify(token, process.env.SECRET_ACCESS_JWT)
   } catch (error) {
     return false
   }

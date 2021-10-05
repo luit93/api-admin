@@ -5,7 +5,7 @@ const app = express()
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
-
+import { isAdminAuth } from './src/middlewares/auth.middleware.js'
 const PORT = process.env.PORT || 8000
 //middleware
 app.use(helmet())
@@ -23,7 +23,7 @@ import categoryRouter from './src/routers/categoryRouter.js'
 import tokenRouter from './src/routers/tokenRouter.js'
 //user routers
 app.use('/api/v1/user', userRouter)
-app.use('/api/v1/category', categoryRouter)
+app.use('/api/v1/category', isAdminAuth, categoryRouter)
 app.use('/api/v1/token', tokenRouter)
 
 //category router
