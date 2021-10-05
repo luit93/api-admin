@@ -19,3 +19,7 @@ export const setRefreshJWT = (_id, refreshJWT) => {
   return UserSchema.findByIdAndUpdate(_id, { refreshJWT })
   // return UserSchema.findByIdAndUpdate(_id,{refreshJWT:refreshJWT})
 }
+
+export const getUser = (filter) => {
+  return UserSchema.findOne(filter)
+}

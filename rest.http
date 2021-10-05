@@ -78,3 +78,9 @@ GET http://localhost:8000/api/v1/category
 Content-Type: application/json
 ### delete category
 DELETE http://localhost:8000/api/v1/category/61510716fa1a8a86328bada8
+
+
+##########t   token API
+
+GET http://localhost:8000/api/v1/token
+Authorization: 
