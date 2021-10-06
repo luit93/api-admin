@@ -21,7 +21,7 @@ Router.get('/', async (req, res) => {
           //create new accessToken
           const accessJWT = await createAccessJWT({
             _id: user._id,
-            email: user._email,
+            email: user.email,
           })
           return res.json({
             status: 'success',

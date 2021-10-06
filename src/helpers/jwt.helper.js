@@ -3,6 +3,7 @@ import { createAccessSession } from '../models/session/Session.model.js'
 import { setRefreshJWT } from '../models/users/User.model.js'
 
 export const createAccessJWT = async ({ _id, email }) => {
+  console.log(email, '--------')
   const token = jwt.sign({ email }, process.env.SECRET_ACCESS_JWT, {
     expiresIn: '15m',
   })
@@ -41,7 +42,7 @@ export const verifyAccessJWT = (token) => {
     return jwt.verify(token, process.env.SECRET_ACCESS_JWT)
   } catch (error) {
     console.log(error)
-    return false
+    return error.message
   }
 }
 

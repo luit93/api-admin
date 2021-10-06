@@ -9,7 +9,6 @@ import {
   emailProcessor,
   emailVerifivationWelcome,
 } from '../helpers/mail.helper.js'
-
 import {
   createUser,
   activeUser,
@@ -28,6 +27,26 @@ Router.all('/', async (req, res, next) => {
   console.log('hit it')
   next()
 })
+
+Router.get('/', isAdminAuth, (req, res) => {
+  try {
+    const user = req.user
+    user.refreshJWT = undefined
+    user.password = undefined
+    res.json({
+      status: 'success',
+      message: 'user profile',
+      user,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      status: 'error',
+      message: 'internal server error',
+    })
+  }
+})
+
 Router.post('/', newUserFormValidation, async (req, res) => {
   try {
     //hash password
