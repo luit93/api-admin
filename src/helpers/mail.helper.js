@@ -51,3 +51,22 @@ export const emailVerifivationWelcome = (email) => {
   }
   send(mailObj)
 }
+
+//update user about profile update
+export const userProfileUpdateNotification = (email) => {
+  const mailObj = {
+    from: `"Eshop " <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Profile updated',
+    text: `Hi there, your profile has been just been updated. If you didn't make this change please contact us immediately`,
+    html: `
+          Hello there,
+          <br />
+          <p>Hi there, your profile has been just been updated. If you didn't make this change please contact us immediately
+          </p>
+
+
+          `,
+  }
+  send(mailObj)
+}

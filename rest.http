@@ -1,6 +1,19 @@
 # user api lists
 
 ###  post
+PUT http://localhost:8000/api/v1/user
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbjRnQGFhLmNvbSIsImlhdCI6MTYzMzkwNDMyOSwiZXhwIjoxNjMzOTA1MjI5fQ.1Fi563SnI1o-_R_-vk9swM0qkUs73SkLU_KtY8C8qtw
+
+{
+    "fname":"Luit",
+    "lname": "Saikia",
+    "phone":"222222",
+    "dob": "1993-04-23",
+    "address":"11 11 11",
+    "gender":"male"
+}
+###  update user
 POST http://localhost:8000/api/v1/user
 Content-Type: application/json
 

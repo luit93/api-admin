@@ -8,16 +8,19 @@ import { getRandomOTP } from '../helpers/otp.helper.js'
 import {
   emailProcessor,
   emailVerifivationWelcome,
+  userProfileUpdateNotification,
 } from '../helpers/mail.helper.js'
 import {
   createUser,
   activeUser,
   getUserByEmail,
+  updateUserById,
 } from '../models/users/User.model.js'
 import {
   newUserFormValidation,
   emailVerificationValidation,
   adminLoginValidation,
+  updateUserFormValidation,
 } from '../middlewares/validation.middleware.js'
 import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
 import { getJWTs } from '../helpers/jwt.helper.js'
@@ -171,4 +174,34 @@ Router.post('/login', adminLoginValidation, async (req, res) => {
 // Router.patch()
 // Router.delete()
 
+//update profile
+Router.put('/', isAdminAuth, updateUserFormValidation, async (req, res) => {
+  try {
+    const { _id, email } = req.user
+    const result = await updateUserById(_id, req.body)
+
+    if (result?._id) {
+      //TODO update user with email notification
+      userProfileUpdateNotification(email)
+
+      return res.json({
+        status: 'success',
+        message: 'Your profile has been updated',
+        result,
+      })
+    }
+
+    res.json({
+      status: 'error',
+      message: 'Unable to process your request, please try again later',
+    })
+  } catch (error) {
+    console.log(error.message)
+    res.json({
+      status: 'error',
+      message:
+        'Error, unable to process your request, Please contact administration.',
+    })
+  }
+})
 export default Router

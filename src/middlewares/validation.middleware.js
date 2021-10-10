@@ -26,6 +26,30 @@ export const newUserFormValidation = (req, res, next) => {
   next()
 }
 
+export const updateUserFormValidation = (req, res, next) => {
+  console.log(req.body)
+
+  const schema = Joi.object({
+    fname: shortStr,
+    lname: Joi.string().alphanum().max(30).required(),
+    dob: Joi.date().allow('').allow(null),
+    phone: Joi.string().max(15).allow(''),
+    address: Joi.string().max(50).allow(''),
+    gender: Joi.string().max(6).allow(''),
+  })
+
+  const result = schema.validate(req.body) //{ value: {}, error: "some message" }
+
+  if (result.error) {
+    return res.json({
+      status: 'error',
+      message: result.error.message,
+    })
+  }
+
+  next()
+}
+
 export const emailVerificationValidation = (req, res, next) => {
   const schema = Joi.object({
     otp: shortStr,
