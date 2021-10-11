@@ -105,3 +105,11 @@ DELETE http://localhost:8000/api/v1/category/61510716fa1a8a86328bada8
 ### request for a new refreshJWT
 GET http://localhost:8000/api/v1/token
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbjRnQGFhLmNvbSIsImlhdCI6MTYzMzM4NDk5MywiZXhwIjoxNjM1OTc2OTkzfQ.k5f7TYPuP3SgPBSJazEGv_-iZarozM04esTNkEgbZ5o
+
+### request OTP for password reset
+POST http://localhost:8000/api/v1/token/request-otp
+Content-Type: application/json
+
+{
+    "email" : "bon4g@aa.com"
+}

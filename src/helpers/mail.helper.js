@@ -70,3 +70,21 @@ export const userProfileUpdateNotification = (email) => {
   }
   send(mailObj)
 }
+//password reset otp notification
+export const passwordReserOTPNotification = ({ email, otp }) => {
+  const mailObj = {
+    from: `"Eshop " <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'OTP for password reset',
+    text: `Hi there, use the otp ${otp} to reset the password. It will expire in 15 mins. If you didn't make this change please contact us immediately`,
+    html: `
+          Hello there,
+          <br />
+          <p>Use the otp ${otp} to reset the password .It will expire in 15 mins. If you didn't make this change please contact us immediately
+          </p>
+
+
+          `,
+  }
+  send(mailObj)
+}
