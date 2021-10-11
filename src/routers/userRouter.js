@@ -21,6 +21,7 @@ import {
   emailVerificationValidation,
   adminLoginValidation,
   updateUserFormValidation,
+  updatePasswordFormValidation,
 } from '../middlewares/validation.middleware.js'
 import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
 import { getJWTs } from '../helpers/jwt.helper.js'
@@ -204,4 +205,50 @@ Router.put('/', isAdminAuth, updateUserFormValidation, async (req, res) => {
     })
   }
 })
+//update password
+Router.patch(
+  '/',
+  isAdminAuth,
+  updatePasswordFormValidation,
+  async (req, res) => {
+    try {
+      const { _id, email } = req.user
+      const { password, currentPassword } = req.body
+      // const result = await updateUserById(_id, req.body)
+      //check current password against the one in DB
+      const isMatched = verifyPassword(currentPassword, req.user.password)
+      console.log(isMatched, 'isMatched')
+      if (isMatched) {
+        //encrypt the new password
+        const hashedPass = hashPassword(password)
+        //update user table with new password
+        const result = hashedPass
+          ? await updateUserById(_id, { password: hashedPass })
+          : null
+        console.log(result, 'result ===')
+        if (result?._id) {
+          //send confirmation email
+          userProfileUpdateNotification(email)
+
+          return res.json({
+            status: 'success',
+            message: 'Your password has been updated',
+          })
+        }
+      }
+
+      res.json({
+        status: 'error',
+        message: 'Unable to process your request, please try again later',
+      })
+    } catch (error) {
+      console.log(error)
+      res.json({
+        status: 'error',
+        message:
+          'Error, unable to process your request, Please contact administration.',
+      })
+    }
+  }
+)
 export default Router

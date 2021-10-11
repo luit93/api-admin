@@ -14,6 +14,7 @@ export const isAdminAuth = async (req, res, next) => {
       if (decoded?.email) {
         //check if token exists in database
         const session = await getSession({ token: authorization })
+        console.log(session)
         if (session?._id) {
           const userId = session.userId
           const user = await getUserById(session.userId)

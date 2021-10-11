@@ -13,7 +13,7 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbjRnQGFhLmNvb
     "address":"11 11 11",
     "gender":"male"
 }
-###  update user
+###  create user
 POST http://localhost:8000/api/v1/user
 Content-Type: application/json
 
@@ -57,10 +57,17 @@ POST http://localhost:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-    
     "email":"bon4g@aa.com",
     "password": "3hhss3"
-    
+}
+### update password
+PATCH http://localhost:8000/api/v1/user/
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbjRnQGFhLmNvbSIsImlhdCI6MTYzMzkxMjQzOCwiZXhwIjoxNjMzOTEzMzM4fQ.FRBhdqvWhnryd0IWpS0Lxx2LZBlTJeARtG31_W4Mukc
+
+{
+    "currentPassword": "3hhss3",
+    "password":"1234Aa/"
 }
 
 
