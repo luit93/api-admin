@@ -18,10 +18,10 @@ POST http://localhost:8000/api/v1/user
 Content-Type: application/json
 
 {
-    "fname":"Luit2n",
+    "fname":"Luit2",
     "lname": "Saikia",
-    "email":"bon4g@aa.com",
-    "password":"3hhss3",
+    "email":"luitg@aa.com",
+    "password":"1234Aa/",
     "phone":"222222",
     "dob": "1993-04-23",
     "address":"11 11 11",
@@ -63,11 +63,11 @@ Content-Type: application/json
 ### update password
 PATCH http://localhost:8000/api/v1/user/
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbjRnQGFhLmNvbSIsImlhdCI6MTYzMzkxMjQzOCwiZXhwIjoxNjMzOTEzMzM4fQ.FRBhdqvWhnryd0IWpS0Lxx2LZBlTJeARtG31_W4Mukc
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imx1aXRnQGFhLmNvbSIsImlhdCI6MTYzMzkyMTY1NiwiZXhwIjoxNjMzOTIyNTU2fQ.-fggXCbPA8SBi6EZs0-oEp_MueC6nzkCt4o4S6Hnk7M
 
 {
-    "currentPassword": "3hhss3",
-    "password":"1234Aa/"
+    "currentPassword": "1234Aa/",
+    "password":"1234Aa/9"
 }
 
 

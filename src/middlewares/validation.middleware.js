@@ -11,7 +11,7 @@ export const newUserFormValidation = (req, res, next) => {
     lname: Joi.string().max(30).required().alphanum(),
     dob: Joi.date().allow('').allow(null),
     email,
-    password: Joi.string().min(6).max(50).required().alphanum(),
+    password,
     phone: Joi.string().max(50).allow(''),
     gender: Joi.string().max(6).allow(''),
     address: Joi.string().max(100).allow(''),
@@ -124,7 +124,7 @@ export const updateCategoryValidation = (req, res, next) => {
 export const adminLoginValidation = (req, res, next) => {
   const schema = Joi.object({
     email,
-    password: Joi.string().min(6).max(50).required().alphanum(),
+    password,
   })
 
   const result = schema.validate(req.body)
