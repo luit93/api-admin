@@ -3,7 +3,7 @@ const shortStr = Joi.string().max(30).required().alphanum()
 const email = Joi.string().email({ minDomainSegments: 2 }).max(30).required()
 const str = Joi.string().max(30)
 const password = Joi.string().min(6).max(50).required()
-
+const otp = Joi.string().min(6).max(50).required()
 export const newUserFormValidation = (req, res, next) => {
   console.log(req.body)
   const schema = Joi.object({
@@ -57,6 +57,26 @@ export const updatePasswordFormValidation = (req, res, next) => {
   const schema = Joi.object({
     password,
     currentPassword: password,
+  })
+
+  const result = schema.validate(req.body) //{ value: {}, error: "some message" }
+
+  if (result.error) {
+    return res.json({
+      status: 'error',
+      message: result.error.message,
+    })
+  }
+
+  next()
+}
+export const resetPasswordFormValidation = (req, res, next) => {
+  console.log(req.body)
+
+  const schema = Joi.object({
+    otp,
+    email,
+    password,
   })
 
   const result = schema.validate(req.body) //{ value: {}, error: "some message" }

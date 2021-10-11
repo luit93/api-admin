@@ -57,17 +57,25 @@ POST http://localhost:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-    "email":"bon4g@aa.com",
-    "password": "3hhss3"
+    "email":"luitg@aa.com",
+    "password": "1234Aa/9"
+}
+### update password
+PATCH http://localhost:8000/api/v1/user/reset-password
+Content-Type: application/json
+
+{    "email": "luitg@aa.com",
+    "otp": "723317",
+    "password":"1234Aa/9"
 }
 ### update password
 PATCH http://localhost:8000/api/v1/user/
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imx1aXRnQGFhLmNvbSIsImlhdCI6MTYzMzkyMTY1NiwiZXhwIjoxNjMzOTIyNTU2fQ.-fggXCbPA8SBi6EZs0-oEp_MueC6nzkCt4o4S6Hnk7M
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imx1aXRnQGFhLmNvbSIsImlhdCI6MTYzMzkyMTk2MywiZXhwIjoxNjMzOTIyODYzfQ.S68gmCmv7OFD-FgKt2tcwmdXfDPtylm4RLcrqcihblQ
 
 {
-    "currentPassword": "1234Aa/",
-    "password":"1234Aa/9"
+    "currentPassword": "1234Aa/9",
+    "password":"1234Aa/"
 }
 
 
@@ -111,5 +119,5 @@ POST http://localhost:8000/api/v1/token/request-otp
 Content-Type: application/json
 
 {
-    "email" : "bon4g@aa.com"
+    "email" : "luitg@aa.com"
 }

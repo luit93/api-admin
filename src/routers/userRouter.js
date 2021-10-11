@@ -15,6 +15,7 @@ import {
   activeUser,
   getUserByEmail,
   updateUserById,
+  updateUserByFilter,
 } from '../models/users/User.model.js'
 import {
   newUserFormValidation,
@@ -22,6 +23,7 @@ import {
   adminLoginValidation,
   updateUserFormValidation,
   updatePasswordFormValidation,
+  resetPasswordFormValidation,
 } from '../middlewares/validation.middleware.js'
 import { hashPassword, verifyPassword } from '../helpers/bcrypt.helper.js'
 import { getJWTs } from '../helpers/jwt.helper.js'
@@ -248,6 +250,47 @@ Router.patch(
         message:
           'Error, unable to process your request, Please contact administration.',
       })
+    }
+  }
+)
+
+//reset password
+Router.patch(
+  '/reset-password',
+  resetPasswordFormValidation,
+  async (req, res) => {
+    try {
+      console.log(req.body)
+      const { email, otp, password } = req.body
+      //check if otp and email are valid in the db
+      const otpInfo = await findUniqueReset({ otp, email })
+      if (otpInfo?._id) {
+        //encruypt password
+        const hashedPass = hashPassword(password)
+        const filter = { email }
+        const obj = { password: hashedPass }
+        //update password in user table in db
+        const user = hashedPass ? await updateUserByFilter(filter, obj) : null
+
+        if (user?._id) {
+          //send email notification about the change
+          userProfileUpdateNotification(email)
+          //remove the email & otp
+          deleteUniqueReset({ otp, email })
+          return res.json({
+            status: 'success',
+            message: 'Your password has been changed',
+          })
+        }
+      }
+
+      res.json({
+        status: 'error',
+        message: 'Invalid request, please try again later',
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'error', message: 'internal server error' })
     }
   }
 )
