@@ -6,6 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import { isAdminAuth } from './src/middlewares/auth.middleware.js'
+import productRouter from './src/routers/productRouter.js'
 const PORT = process.env.PORT || 8000
 //middleware
 app.use(helmet())
@@ -25,6 +26,7 @@ import tokenRouter from './src/routers/tokenRouter.js'
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/category', isAdminAuth, categoryRouter)
 app.use('/api/v1/token', tokenRouter)
+app.use('/api/v1/product', productRouter)
 
 //category router
 app.use('/', (req, res) => {
