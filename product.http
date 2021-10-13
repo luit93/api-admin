@@ -1,7 +1,7 @@
 ### Product APIS
 
 ### Get products
-GET http://localhost:8000/api/v1/product
+GET http://localhost:8000/api/v1/product/sony-tv
 
 //title":"",status, price, quantity, description,sale price, saleStartDate,saleEndDate,brand, categories
 //slug, image
@@ -11,15 +11,18 @@ Content-Type: application/json
 
 {
    "status": true,
- "title": "samsung tv",
+ "title": "apple ipad",
  "price": 500,
  "qty": 50,
- "description": "Awesome TV",
- "categories": "slfjsl345808",
+ "description": "Awesome tab",
+ "categories": "electronics",
  "salePrice": 0,
  "saleStartDate": "",
  "saleEndDate": "", 
- "brand": "samsung"
+ "brand": "apple"
 }
 
 
+### delete a new product
+DELETE http://localhost:8000/api/v1/product/6165fcbd929e07ff2b4aa8bf
+Content-Type: application/json

@@ -26,10 +26,7 @@ export const newProductFormValidation = (req, res, next) => {
     brand: shortStr,
   })
 
-  console.log(req.body)
-
   const result = schema.validate(req.body) //{value: {}, error: "msg"}
-  console.log(result)
   if (result.error) {
     return res.json({
       status: 'error',

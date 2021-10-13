@@ -44,7 +44,7 @@ Router.post('/', newProductFormValidation, async (req, res) => {
   try {
     const { title } = req.body
     const slug = slugify(title, { lower: true })
-    const result = await createProduct(req.body)
+    const result = await createProduct({ ...req.body, slug })
     if (result?._id) {
       return res.json({
         status: 'success',
@@ -64,7 +64,7 @@ Router.post('/', newProductFormValidation, async (req, res) => {
   }
 })
 //delete product
-Router.put('/', async (req, res) => {
+Router.delete('/:_id', async (req, res) => {
   try {
     const { _id } = req.params
     const product = await deleteProductById(_id)
@@ -84,10 +84,10 @@ Router.put('/', async (req, res) => {
   }
 })
 //update product
-Router.delete('/:_id', async (req, res) => {
+Router.put('/:_id', async (req, res) => {
   try {
-    console.log(req.body)
-    const { _id, ...product } = req.body
+    console.log(req.params)
+    const { _id, ...product } = req.params
     const result = await updateProductById(_id, product)
     if (result?._id) {
       return res.json({
