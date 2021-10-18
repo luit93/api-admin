@@ -13,7 +13,10 @@ import {
   updateProductById,
 } from '../models/product/Product.model.js'
 import slugify from 'slugify'
-import { newProductFormValidation } from '../middlewares/productValidation.middleware.js'
+import {
+  newProductFormValidation,
+  updateProductFormValidation,
+} from '../middlewares/productValidation.middleware.js'
 const Router = express.Router()
 //get all or single product
 Router.get('/:slug?', async (req, res) => {
@@ -26,6 +29,7 @@ Router.get('/:slug?', async (req, res) => {
       result = await getProducts()
     }
     //server side validation
+
     //store product info
     console.log(req.body)
     return res.json({
@@ -84,10 +88,9 @@ Router.delete('/:_id', async (req, res) => {
   }
 })
 //update product
-Router.put('/:_id', async (req, res) => {
+Router.put('/', updateProductFormValidation, async (req, res) => {
   try {
-    console.log(req.params)
-    const { _id, ...product } = req.params
+    const { _id, ...product } = req.body
     const result = await updateProductById(_id, product)
     if (result?._id) {
       return res.json({
