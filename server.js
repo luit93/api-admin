@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
 const app = express()
+import path from 'path'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
@@ -18,6 +19,10 @@ app.use(express.json())
 //establish mongodb connection
 import mongoClient from './src/config/db.js'
 mongoClient()
+///serve static files from public directory
+const __dirname = path.resolve()
+console.log(__dirname)
+app.use(express.static(path.join(__dirname, 'public')))
 //load routers
 import userRouter from './src/routers/userRouter.js'
 import categoryRouter from './src/routers/categoryRouter.js'

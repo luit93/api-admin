@@ -72,10 +72,22 @@ Router.post(
   newProductFormValidation,
   async (req, res) => {
     try {
+      //handle img path
+      const pathName = 'public/img/product/'
+      const basePath = `${req.protocol}://${req.get('host')}/img/product/`
+      let images = []
+      const files = req.files
+      files.length &&
+        files.map((img) => {
+          console.log(img)
+          const fullPath = basePath + img.filename
+          images.push(fullPath)
+        })
       ///
+
       const { title } = req.body
       const slug = slugify(title, { lower: true })
-      const result = await createProduct({ ...req.body, slug })
+      const result = await createProduct({ ...req.body, slug, images })
       if (result?._id) {
         return res.json({
           status: 'success',
@@ -116,25 +128,43 @@ Router.delete('/:_id', async (req, res) => {
   }
 })
 //update product
-Router.put('/', updateProductFormValidation, async (req, res) => {
-  try {
-    const { _id, ...product } = req.body
-    const result = await updateProductById(_id, product)
-    if (result?._id) {
-      return res.json({
-        status: 'success',
-        message: ' product updated',
-      })
-    }
+Router.put(
+  '/',
+  upload.array('images', 5),
+  updateProductFormValidation,
+  async (req, res) => {
+    try {
+      const { imgToDelete, oldImages, _id, ...product } = req.body
+      //rfiltering imgTodelete from oldImages
+      const filteredImgList = oldImages?.filter(
+        (itm) => !imgToDelete.includes(itm)
+      )
+      const basePath = `${req.protocol}://${req.get('host')}/img/product/`
+      let images = [...filteredImgList]
+      const files = req.files
+      files.length &&
+        files.map((img) => {
+          const fullPath = basePath + img.filename
+          images.push(fullPath)
+        })
+      product.images = images
+      const result = await updateProductById(_id, product)
+      if (result?._id) {
+        return res.json({
+          status: 'success',
+          message: ' product updated',
+        })
+      }
 
-    res.json({
-      status: 'error',
-      message: ' unable to update product',
-    })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ status: 'error', message: error.message })
+      res.json({
+        status: 'error',
+        message: ' unable to update product',
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ status: 'error', message: error.message })
+    }
   }
-})
+)
 
 export default Router

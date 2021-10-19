@@ -20,9 +20,10 @@ export const newProductFormValidation = (req, res, next) => {
     price: num,
     qty: num,
     description: longStr.required(),
-    categories: Joi.array(),
+    categories: longStr,
     salePrice: num,
     saleStartDate: date,
+
     saleEndDate: date,
     brand: shortStr,
   })
@@ -34,11 +35,12 @@ export const newProductFormValidation = (req, res, next) => {
       message: result.error.message,
     })
   }
+  req.body.categories = req.body.categories?.split(',')
+
   next()
 }
 
 export const updateProductFormValidation = (req, res, next) => {
-  console.log(req.body)
   const schema = Joi.object({
     _id,
     status: bool.required(),
@@ -46,14 +48,16 @@ export const updateProductFormValidation = (req, res, next) => {
     price: num,
     qty: num,
     description: longStr.required(),
-    categories: Joi.array(),
-    images: Joi.array(),
+    categories: longStr,
+    images: longStr,
+    imgToDelete: longStr,
+    oldImages: longStr,
     salePrice: num,
     saleStartDate: date,
     saleEndDate: date,
     brand: shortStr,
   })
-
+  console.log(req.body)
   const result = schema.validate(req.body) //{value: {}, error: "msg"}
   if (result.error) {
     return res.json({
@@ -61,5 +65,10 @@ export const updateProductFormValidation = (req, res, next) => {
       message: result.error.message,
     })
   }
+  const { categories, images, imgToDelete, oldImages } = req.body
+  req.body.categories = categories?.split(',')
+  req.body.images = images?.split(',')
+  req.body.oldImages = oldImages?.split(',')
+  req.body.imgToDelete = imgToDelete?.split(',')
   next()
 }
