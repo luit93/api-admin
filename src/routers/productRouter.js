@@ -3,6 +3,7 @@ import { verifyRefreshJWT, createAccessJWT } from '../helpers/jwt.helper.js'
 import { getUser, getUserByEmail } from '../models/users/User.model.js'
 import { passwordReserOTPNotification } from '../helpers/mail.helper.js'
 import { createPasswordResetOTP } from '../models/reset-pin/ResetPin.model.js'
+import multer from 'multer'
 import {
   createProduct,
   getProducts,
@@ -17,6 +18,27 @@ import {
   newProductFormValidation,
   updateProductFormValidation,
 } from '../middlewares/productValidation.middleware.js'
+//multer config
+// const upload = multer({ dest: 'uploads/' })
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    let error = null
+    //validation
+    cb(error, 'public/img/product')
+  },
+  filename: function (req, file, cb) {
+    // const uniqueSuffix= Date.now()+ '-'+Math.round(Math.random()*1E9)
+    const fileNameArg = file.originalname.split('.')
+    const ext = fileNameArg[fileNameArg.length - 1]
+    const name = fileNameArg[0]
+    const uniqueVal = Date.now()
+    const fileName = slugify(name) + '-' + uniqueVal + '.' + ext
+    console.log(fileName, '===filr name')
+    cb(null, fileName)
+  },
+})
+const upload = multer({ storage })
+
 const Router = express.Router()
 //get all or single product
 Router.get('/:slug?', async (req, res) => {
@@ -44,29 +66,35 @@ Router.get('/:slug?', async (req, res) => {
 })
 
 //create product
-Router.post('/', newProductFormValidation, async (req, res) => {
-  try {
-    const { title } = req.body
-    const slug = slugify(title, { lower: true })
-    const result = await createProduct({ ...req.body, slug })
-    if (result?._id) {
+Router.post(
+  '/',
+  upload.array('images', 5),
+  newProductFormValidation,
+  async (req, res) => {
+    try {
+      ///
+      const { title } = req.body
+      const slug = slugify(title, { lower: true })
+      const result = await createProduct({ ...req.body, slug })
+      if (result?._id) {
+        return res.json({
+          status: 'success',
+          message: ' product generated',
+        })
+      }
       return res.json({
-        status: 'success',
-        message: ' product generated',
+        status: 'error',
+        message: ' unable t create product',
       })
+    } catch (error) {
+      let msg = error.message
+      if (error.message.includes('E11000 duplicate key error collection:')) {
+        msg = "The prod name/slug can't be the same"
+      }
+      res.json({ status: 'error', message: msg })
     }
-    return res.json({
-      status: 'error',
-      message: ' unable t create product',
-    })
-  } catch (error) {
-    let msg = error.message
-    if (error.message.includes('E11000 duplicate key error collection:')) {
-      msg = "The prod name/slug can't be the same"
-    }
-    res.json({ status: 'error', message: msg })
   }
-})
+)
 //delete product
 Router.delete('/:_id', async (req, res) => {
   try {
