@@ -121,3 +121,30 @@ Content-Type: application/json
 {
     "email" : "luitg@aa.com"
 }
+
+
+###### payment option api
+
+
+### get payment options
+
+GET http://localhost:8000/api/v1/payment-option
+Content-Type: application/json
+
+
+### add new option
+
+POST http://localhost:8000/api/v1/payment-option
+Content-Type: application/json
+
+{
+    "status": false,
+    "name": "Payenfkenkfnek",
+    "info": "pleamn dked k ails"
+}
+
+
+### Delete option
+
+DELETE http://localhost:8000/api/v1/payment-option/616f716a080e05c3c34d40a2
+
